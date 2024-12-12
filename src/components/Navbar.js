@@ -19,12 +19,18 @@ const Navbar = () => {
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         className={`fixed w-full z-50 transition-all duration-300 ${
-          isScrolled ? 'bg-black/90 backdrop-blur-sm py-4' : 'bg-transparent py-6'
+          isScrolled ? 'bg-black/90 backdrop-blur-sm py-1' : 'bg-transparent py-2'
         }`}
       >
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center">
-            <img src="/summitlogo.png" alt="Summit Media" className="h-8 md:h-10" />
+            <div className="relative -my-6">
+              <img 
+                src={isScrolled ? "/whitesummit.png" : "/summitlogo.png"}
+                alt="Summit Media" 
+                className="h-16 md:h-24 object-contain transition-all duration-300" 
+              />
+            </div>
             
             {/* Desktop Menu */}
             <div className="hidden md:flex items-center space-x-8">
