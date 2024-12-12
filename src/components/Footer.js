@@ -14,7 +14,7 @@ const Footer = () => {
   ];
 
   const socialLinks = [
-    { name: 'Instagram', href: 'https://instagram.com' },
+    { name: 'Instagram', href: 'https://instagram.com/summitagency' },
     { name: 'LinkedIn', href: 'https://linkedin.com' },
     { name: 'Facebook', href: 'https://facebook.com' }
   ];

@@ -1,7 +1,65 @@
-import React from 'react';
 import { motion } from 'framer-motion';
+import { useState, useRef } from 'react';
+import emailjs from '@emailjs/browser';
 
-function ContactForm() {
+const ContactForm = () => {
+  const form = useRef();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState({ type: '', message: '' });
+
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    businessName: '',
+    service: '',
+    message: ''
+  });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitStatus({ type: '', message: '' });
+
+    try {
+      await emailjs.sendForm(
+        process.env.REACT_APP_EMAILJS_SERVICE_ID,
+        process.env.REACT_APP_EMAILJS_TEMPLATE_ID,
+        form.current,
+        process.env.REACT_APP_EMAILJS_PUBLIC_KEY
+      );
+
+      setSubmitStatus({
+        type: 'success',
+        message: 'Thank you! We will get back to you soon.'
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        phone: '',
+        email: '',
+        businessName: '',
+        service: '',
+        message: ''
+      });
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Something went wrong. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const reviews = [
     {
       name: "Sarah Johnson",
@@ -52,41 +110,86 @@ function ContactForm() {
                 </p>
               </div>
 
-              <form className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
+              {submitStatus.message && (
+                <div className={`mb-6 p-4 rounded-lg ${
+                  submitStatus.type === 'success' 
+                    ? 'bg-green-100 text-green-700' 
+                    : 'bg-red-100 text-red-700'
+                }`}>
+                  {submitStatus.message}
+                </div>
+              )}
+
+              <form ref={form} className="space-y-8" onSubmit={handleSubmit}>
+                {/* Personal Info Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <input
                     type="text"
-                    placeholder="Name"
+                    name="name"
+                    placeholder="Your Name"
+                    value={formData.name}
+                    onChange={handleChange}
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
+                    required
                   />
+
                   <input
                     type="tel"
-                    placeholder="Phone"
+                    name="phone"
+                    placeholder="Phone Number"
+                    value={formData.phone}
+                    onChange={handleChange}
                     className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
+                    required
                   />
                 </div>
 
-                <input
-                  type="email"
-                  placeholder="Email"
-                  className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
-                />
+                {/* Business Info Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <input
+                    type="email"
+                    name="email"
+                    placeholder="Email Address"
+                    value={formData.email}
+                    onChange={handleChange}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
+                    required
+                  />
+
+                  <input
+                    type="text"
+                    name="businessName"
+                    placeholder="Business Name"
+                    value={formData.businessName}
+                    onChange={handleChange}
+                    className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
 
                 <select 
+                  name="service"
+                  value={formData.service}
+                  onChange={handleChange}
                   className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all text-gray-500"
-                  defaultValue=""
+                  required
                 >
                   <option value="" disabled>Select Service</option>
-                  <option>Social Media Management</option>
-                  <option>Content Creation</option>
-                  <option>Brand Development</option>
-                  <option>Digital Marketing</option>
+                  <option value="social-media">Social Media Management</option>
+                  <option value="content">Content Creation</option>
+                  <option value="advertising">Paid Advertising</option>
+                  <option value="website">Custom Website</option>
+                  <option value="other">Other Services</option>
                 </select>
 
                 <textarea
+                  name="message"
                   placeholder="Tell us about your project"
+                  value={formData.message}
+                  onChange={handleChange}
                   rows="4"
                   className="w-full bg-white border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-primary-accent/50 focus:border-transparent transition-all"
+                  required
                 ></textarea>
 
                 <motion.button
@@ -146,6 +249,6 @@ function ContactForm() {
       </div>
     </section>
   );
-}
+};
 
 export default ContactForm; 
