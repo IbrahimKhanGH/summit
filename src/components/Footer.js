@@ -1,22 +1,22 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const Footer = () => {
   const currentYear = new Date().getFullYear();
 
   const services = [
-    'Social Media Strategy',
-    'Content Creation',
-    'Social Media Management',
-    'Paid Advertising',
-    'Custom Websites',
-    'Brand Development',
-    'Specialized Services'
+    "Social Media Strategy",
+    "Content Creation",
+    "Social Media Management",
+    "Paid Advertising",
+    "Custom Websites",
+    "Brand Development",
+    "Specialized Services",
   ];
 
   const socialLinks = [
-    { name: 'Instagram', href: 'https://instagram.com/summitagency' },
-    { name: 'LinkedIn', href: 'https://linkedin.com' },
-    { name: 'Facebook', href: 'https://facebook.com' }
+    { name: "Instagram", href: "https://instagram.com/summitagency" },
+    { name: "LinkedIn", href: "https://linkedin.com" },
+    { name: "Facebook", href: "https://facebook.com" },
   ];
 
   return (
@@ -54,7 +54,10 @@ const Footer = () => {
             <ul className="space-y-3">
               {services.map((service) => (
                 <li key={service}>
-                  <a href="#services" className="text-gray-600 hover:text-primary-accent transition-colors">
+                  <a
+                    href="#services"
+                    className="text-gray-600 hover:text-primary-accent transition-colors"
+                  >
                     {service}
                   </a>
                 </li>
@@ -67,12 +70,18 @@ const Footer = () => {
             <h3 className="text-primary font-semibold mb-4">Contact</h3>
             <ul className="space-y-3 text-gray-600">
               <li>
-                <a href="mailto:hello@summitmedia.com" className="hover:text-primary-accent transition-colors">
+                <a
+                  href="mailto:hello@summitmedia.com"
+                  className="hover:text-primary-accent transition-colors"
+                >
                   hello@summitmedia.com
                 </a>
               </li>
               <li>
-                <a href="tel:+1234567890" className="hover:text-primary-accent transition-colors">
+                <a
+                  href="tel:+1234567890"
+                  className="hover:text-primary-accent transition-colors"
+                >
                   (123) 456-7890
                 </a>
               </li>
@@ -91,4 +100,4 @@ const Footer = () => {
   );
 };
 
-export default Footer; 
+export default Footer;
